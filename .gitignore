@@ -1,0 +1,21 @@
+# Environment / secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+venv/
+.venv/
+
+# ADK
+.adk/
+
+# VS Code
+.vscode/
+
+
+# OS
+.DS_Store
+Thumbs.db
