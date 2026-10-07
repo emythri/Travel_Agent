@@ -92,7 +92,7 @@ root_agent = Agent(
 
     # model="gemini-3.5-flash",
     model=Gemini(
-    model="gemini-3.5-flash",
+    model="gemini-3.6-flash",
     retry_options=types.HttpRetryOptions(
         attempts=5,
         initial_delay=2,

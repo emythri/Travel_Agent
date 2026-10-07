@@ -1,0 +1,116 @@
+{
+  "project": "Travel Planner Agent",
+  "version": "1.0",
+  "metrics": {
+    "correctness": "0-1: satisfies the requested travel behavior and facts",
+    "relevance": "0-1: stays focused on the user's request",
+    "completeness": "0-1: includes the important requested information",
+    "tool_usage": "0-1: uses the appropriate tool when the request requires it; 1 for correct no-tool behavior on blocked requests"
+  },
+  "eval_cases": [
+    {
+      "id": "TC01",
+      "category": "normal_travel",
+      "input": "Plan a 3-day trip to Jaipur with a budget of ₹15,000. I like history and local food.",
+      "expected_behavior": [
+        "Generate a 3-day Jaipur itinerary.",
+        "Recommend historical places such as Amer Fort, City Palace, Jantar Mantar or Hawa Mahal.",
+        "Include local-food recommendations.",
+        "Consider the ₹15,000 budget and indicate whether the estimate is within budget.",
+        "Use recommend_places and estimate_budget appropriately."
+      ]
+    },
+    {
+      "id": "TC02",
+      "category": "destination_and_duration",
+      "input": "Plan a 5-day trip to Delhi with a budget of ₹25,000.",
+      "expected_behavior": [
+        "Recognize Delhi as the destination and 5 days as the duration.",
+        "Provide a day-wise or clearly structured 5-day itinerary.",
+        "Consider the ₹25,000 budget.",
+        "Avoid incorrectly substituting Jaipur."
+      ]
+    },
+    {
+      "id": "TC03",
+      "category": "low_budget",
+      "input": "Plan a 3-day trip to Jaipur with only ₹5,000.",
+      "expected_behavior": [
+        "Recognize the low budget.",
+        "Provide a realistic budget-conscious plan.",
+        "Use estimate_budget when estimating costs.",
+        "Clearly indicate if the default estimate exceeds the user's budget and suggest cost-saving choices."
+      ]
+    },
+    {
+      "id": "TC04",
+      "category": "missing_information",
+      "input": "Plan a 3-day trip with a budget of ₹15,000.",
+      "expected_behavior": [
+        "Identify that the destination is missing.",
+        "Ask the user for the destination instead of inventing one.",
+        "Do not produce a destination-specific itinerary."
+      ]
+    },
+    {
+      "id": "TC05",
+      "category": "missing_information",
+      "input": "Plan a 3-day trip to Jaipur. I like history and local food.",
+      "expected_behavior": [
+        "Recognize that the budget is missing.",
+        "Ask for the budget or clearly state that a budget estimate can only be approximate without it.",
+        "Still make useful destination/preference recommendations if appropriate."
+      ]
+    },
+    {
+      "id": "TC06",
+      "category": "invalid_input",
+      "input": "Plan a 0-day trip to Jaipur with a budget of ₹15,000.",
+      "expected_behavior": [
+        "Reject or clarify the invalid duration.",
+        "Do not claim that a 0-day itinerary is a valid 0-day trip.",
+        "Ask for a positive number of days."
+      ]
+    },
+    {
+      "id": "TC07",
+      "category": "invalid_input",
+      "input": "Plan a 3-day trip to Jaipur with a budget of -₹5,000.",
+      "expected_behavior": [
+        "Reject or clarify the invalid negative budget.",
+        "Do not calculate a normal travel plan using a negative budget.",
+        "Ask for a valid non-negative/positive budget."
+      ]
+    },
+    {
+      "id": "TC08",
+      "category": "user_preference",
+      "input": "I am visiting Jaipur for 2 days and I love history. What should I see?",
+      "expected_behavior": [
+        "Focus recommendations on historical attractions.",
+        "Recommend relevant Jaipur historical places such as Amer Fort, City Palace, Jantar Mantar, Hawa Mahal, Jaigarh Fort or Nahargarh Fort.",
+        "Prefer history-related recommendations over food-only recommendations."
+      ]
+    },
+    {
+      "id": "TC09",
+      "category": "user_preference",
+      "input": "I am visiting Jaipur for 2 days and I mainly want local food. Where should I go?",
+      "expected_behavior": [
+        "Focus on local-food recommendations.",
+        "Recommend food areas such as Johari Bazaar, MI Road or Masala Chowk.",
+        "Keep the answer travel/food focused rather than drifting into unrelated information."
+      ]
+    },
+    {
+      "id": "TC10",
+      "category": "out_of_scope",
+      "input": "What is Python?",
+      "expected_behavior": [
+        "Reject the request because it is outside the travel-planning scope.",
+        "Use the local domain guard and do not call Gemini for the blocked request.",
+        "Return a concise message explaining that the agent only handles travel planning."
+      ]
+    }
+  ]
+}
